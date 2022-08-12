@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="./app.js" type="module" defer></script>
+    <script src="https://kit.fontawesome.com/6f81cbf427.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>
+        <div class="navbar">
+            <i class="fa-solid fa-house navbar__icon"></i>
+            <p class="navbar__text">Houses App</p>
+        </div>
+    </nav>
+    <main>
+        <form class="form">
+            <h3 class="form__title">City:</h3>
+            <div class="form__container">
+                <label for="miami" class="form__label"><input type="radio" name="city" id="miami"
+                        class="form__input">Miami</label>
+                <label for="new-york" class="form__label"><input type="radio" id="new-york" name="city" class="form__input">New
+                    York</label>
+                <label for="dallas" class="form__label"><input type="radio" name="city" id="dallas"
+                        class="form__input">Dallas</label>
+                <label for="los-angeles" class="form__label"><input type="radio" name="city" id="los-angeles"
+                        class="form__input">Los
+                    Angeles</label>
+            </div>
+            <h3 class="form__title">Price:</h3>
+            <div class="form__container-range">
+                    <input type="range" id="rangeInput" class="form__range" min="0" max="1000000" value="500000">
+                <p class="form__price-amount"></p>
+            </div>
+            <h3 class="form__title">Square</h3>
+            <div class="form__container">
+                <label for="all" class="form__label"><input type="radio" class="form__input" name="squares" id="all"> All sizes</label>
+                <label for="below" class="form__label"><input type="radio" class="form__input" name="squares" id="below"> Below 1000
+                    sq ft</label>
+                <label for="middle" class="form__label"><input type="radio" class="form__input" name="squares" id="middle">
+                    1001-1500
+                    sq ft</label>
+                <label for="above" class="form__label"><input type="radio" class="form__input" name="squares" id="above"> Above 1501
+                    sq ft</label>
+            </div>
+            <button class="form__btn" id="submit" type="submit">Filter</button>
+        </form>
+        <div class="houses-area"></div>
+    </main>
+</body>
+
+</html>
