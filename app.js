@@ -4,10 +4,14 @@ import {
 } from "./dataHouses.js";
 
 const housesArea = document.querySelector('.houses-area')
-const form = document.querySelector('.form')
 let cities = [...document.querySelectorAll(`input[name="city"]`)]
 let squares = [...document.querySelectorAll(`input[name="squares"]`)]
 const formRange = document.querySelector('.form__range')
+const inputRange = document.querySelector('.form__range')
+const priceAmount = document.querySelector('.form__price-amount')
+const btnFilter = document.querySelector('.form__btn')
+let price = inputRange.value
+priceAmount.innerHTML = `Max Price: ` + price + "$"
 let currentHouses;
 
 const renderHouses = (arr) => {
@@ -17,7 +21,7 @@ const renderHouses = (arr) => {
             name,
             img,
             price,
-            city,
+            cityInner,
             bathroom,
             bedroom,
             square,
@@ -29,7 +33,7 @@ const renderHouses = (arr) => {
                 <div class="house__top">
                     <h3 class="house__title">${name}</h3>
                     <div class="house__location"><i class="fa-solid fa-location-dot house__location-icon"></i><span
-                            class="house__location-city">${city}, USA</span></div>
+                            class="house__location-city">${cityInner}, USA</span></div>
                 </div>
     
                 <div class="house__info">
@@ -47,7 +51,7 @@ const renderHouses = (arr) => {
                 <div class="house__line"></div>
     
                 <div class="house__bottom">
-                    <p class="house__bottom-price">${price}$</p>
+                    <p class="house__bottom-price">${price.toLocaleString('en-US')}$</p>
                     <button class="house__bottom-btn">Ask an advisor</button>
                 </div>
             </div>
@@ -61,39 +65,27 @@ const renderHouses = (arr) => {
     }
 }
 
-// function filterHouse (e) {
-//     e.preventDefault();
-//     currentHouses = []
-//     let cities = document.querySelectorAll(`input[name="city"]`)
-//     cities.forEach((city,index) => {
-//         if(city.checked)  {
-//             const filterCity = dataHouses.filter(house => house.city === city.id && city.checked)
-//             const filtered = {...filterCity}
-//             console.log(filterCity)
-//             // const filtered = Object.assign({}, ...filterCity)
-//             // console.log(filtered)
-//             // currentHouses.push(filterCity)
-//             currentHouses.push(filtered)
-//             // console.log(currentHouses)
-//             housesArea.innerHTML = ''
-//             renderHouses(currentHouses)
-//         }
-//     })
-//     // console.log(currentHouses)
-// }
+function refreshHouses(e) {
+    e.preventDefault()
+    housesArea.innerHTML = ''
+    renderHouses(startHouses)
+}
 
 renderHouses(startHouses)
 
-cities.forEach((city, index) => {
-    city.addEventListener('input', () => {
-        if (city.id === 'miami' || city.id === 'new-york' || city.id === 'dallas' || city.id === 'los-angeles') {
-            const filterCity = dataHouses.filter(house => house.city === city.id && house.price < formRange.value)
-            currentHouses = filterCity
-            housesArea.innerHTML = ''
-            renderHouses(currentHouses)
-            console.log(city.id)
-        }
-    })
+cities.forEach(city => {
+        city.addEventListener('input', () => {
+            if (city.id === 'miami' ||
+                city.id === 'new-york' ||
+                city.id === 'dallas' ||
+                city.id === 'los-angeles') {
+                const filterCity = dataHouses.filter(house => house.city === city.id &&
+                    house.price < formRange.value)
+                currentHouses = filterCity
+                housesArea.innerHTML = ''
+                renderHouses(currentHouses)
+            }
+        })
 })
 
 formRange.addEventListener('input', () => {
@@ -101,8 +93,26 @@ formRange.addEventListener('input', () => {
     squares.forEach(square => {
         cities.forEach(city => {
             if (city.checked && square.checked) {
-                const filterRange = dataHouses.filter(house => house.price < formRange.value && house.city === city.id)
-                currentHouses = filterRange
+                if (square.id === 'below') {
+                    const filterRange = dataHouses.filter(house => house.price < formRange.value &&
+                        house.city === city.id && house.square <= 1000 &&
+                        house.price < formRange.value)
+                    currentHouses = filterRange
+                } else if (square.id === 'middle') {
+                    const filterRange = dataHouses.filter(house => house.price < formRange.value &&
+                        house.city === city.id && house.square >= 1001 &&
+                        house.square <= 1500 && house.price < formRange.value)
+                    currentHouses = filterRange
+                } else if (square.id === 'above') {
+                    const filterRange = dataHouses.filter(house => house.price < formRange.value &&
+                        house.city === city.id && house.square >= 1501 &&
+                        house.price < formRange.value)
+                    currentHouses = filterRange
+                } else if (square.id === 'all') {
+                    const filterRange = dataHouses.filter(house => house.price < formRange.value &&
+                        house.city === city.id)
+                    currentHouses = filterRange
+                }
                 renderHouses(currentHouses)
             }
         })
@@ -111,33 +121,37 @@ formRange.addEventListener('input', () => {
 
 squares.forEach(square => {
     square.addEventListener('input', () => {
-        housesArea.innerHTML = ''
-        console.log(square.id)
-        if (square.id === 'below') {
-            const filterSquares = dataHouses.filter(house => house.square <= 1000 && house.price < formRange.value)
-            currentHouses = filterSquares
-        } else if (square.id === 'middle') {
-            const filterSquares = dataHouses.filter(house => house.square >= 1001 && house.square <= 1500 && house.price < formRange.value)
-            currentHouses = filterSquares
-        } else if (square.id === 'above') {
-            const filterSquares = dataHouses.filter(house => house.square >= 1501 && house.price < formRange.value)
-            currentHouses = filterSquares
-        } else if (square.id === 'all') currentHouses = dataHouses
-        renderHouses(currentHouses)
+        cities.forEach(city => {
+            if (city.checked && square.checked) {
+                if (square.id === 'below') {
+                    const filterSquares = dataHouses.filter(house => house.square <= 1000 &&
+                        house.price < formRange.value &&
+                        house.city === city.id)
+                    currentHouses = filterSquares
+                } else if (square.id === 'middle') {
+                    const filterSquares = dataHouses.filter(house => house.square >= 1001 &&
+                        house.square <= 1500 && house.price < formRange.value &&
+                        house.city === city.id)
+                    currentHouses = filterSquares
+                } else if (square.id === 'above') {
+                    const filterSquares = dataHouses.filter(house => house.square >= 1501 &&
+                        house.price < formRange.value &&
+                        house.city === city.id)
+                    currentHouses = filterSquares
+                } else if (square.id === 'all') {
+                    const filterSquares = dataHouses.filter(house => house.price < formRange.value &&
+                        house.city === city.id)
+                    currentHouses = filterSquares
+                }
+                housesArea.innerHTML = ''
+                renderHouses(currentHouses)
+            }
+        })
     })
 })
 
-
-const inputRange = document.querySelector('.form__range')
-const priceAmount = document.querySelector('.form__price-amount')
-let price = inputRange.value
-priceAmount.innerHTML = `Max Price: ` + price + "$"
-
 inputRange.addEventListener('input', () => {
-    price = inputRange.value
+    price = parseFloat(inputRange.value).toLocaleString('en')
     priceAmount.innerHTML = `Max Price: ` + price + "$"
 })
-
-const btnFilter = document.querySelector('.form__btn')
-
-// btnFilter.addEventListener('click', filterHouse)
+btnFilter.addEventListener('click', refreshHouses)

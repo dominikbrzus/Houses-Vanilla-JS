@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="./app.js" type="module" defer></script>
     <script src="https://kit.fontawesome.com/6f81cbf427.js" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Houses App</title>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
             <h3 class="form__title">City:</h3>
             <div class="form__container">
                 <label for="miami" class="form__label"><input type="radio" name="city" id="miami"
-                        class="form__input">Miami</label>
+                        class="form__input" checked>Miami</label>
                 <label for="new-york" class="form__label"><input type="radio" id="new-york" name="city" class="form__input">New
                     York</label>
                 <label for="dallas" class="form__label"><input type="radio" name="city" id="dallas"
@@ -39,7 +39,7 @@
             </div>
             <h3 class="form__title">Square</h3>
             <div class="form__container">
-                <label for="all" class="form__label"><input type="radio" class="form__input" name="squares" id="all"> All sizes</label>
+                <label for="all" class="form__label"><input type="radio" class="form__input" name="squares" id="all" checked> All sizes</label>
                 <label for="below" class="form__label"><input type="radio" class="form__input" name="squares" id="below"> Below 1000
                     sq ft</label>
                 <label for="middle" class="form__label"><input type="radio" class="form__input" name="squares" id="middle">
@@ -48,10 +48,11 @@
                 <label for="above" class="form__label"><input type="radio" class="form__input" name="squares" id="above"> Above 1501
                     sq ft</label>
             </div>
-            <button class="form__btn" id="submit" type="submit">Filter</button>
+            <button class="form__btn" id="submit" type="submit">Refresh</button>
         </form>
         <div class="houses-area"></div>
     </main>
+    <footer class="footer"><p>The website was created by <a href="https://websitesdesign.pl">websitedesign.pl</a></p></footer>
 </body>
 
 </html>
